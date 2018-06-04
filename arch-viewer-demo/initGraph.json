@@ -1,0 +1,171 @@
+{
+  "nodes": [
+    {
+      "id": "arch-manager",
+      "label": "Architecture Manager",
+      "type": "comp",
+      "meta": {
+        "host": "123.123.123.123",
+        "location": "V2X Machine",
+        "information": "A SW Component to manage the architecture of V2X SW",
+        "sinkEdgeIDSet": {},
+        "sourceEdgeIDSet": {
+          "cps-arch-manager-conn": true,
+          "cps-arch-manager-to-v2x-conn": true
+        }
+      }
+    },
+    {
+      "id": "cps-service-manager",
+      "label": "CPS Service Manager",
+      "type": "comp",
+      "meta": {
+        "host": "123.123.123.124",
+        "location": "V2X Machine",
+        "information": "A SW Component to manage various CPS services",
+        "sinkEdgeIDSet": {
+          "cps-arch-manager-conn": true
+        },
+        "sourceEdgeIDSet": {
+          "cps-service-manager-conn": true
+        }
+      }
+    },
+    {
+      "id": "cps-service-registry",
+      "label": "CPS Service Registry",
+      "type": "comp",
+      "meta": {
+        "host": "123.123.123.125",
+        "location": "V2X Machine",
+        "information": "A database, which contains various CPS services",
+        "sinkEdgeIDSet": {
+          "cps-service-manager-conn": true
+        },
+        "sourceEdgeIDSet": {}
+      }
+    },
+    {
+      "id": "security-application",
+      "label": "Security Application",
+      "type": "comp",
+      "meta": {
+        "host": "192.168.0.2",
+        "location": "Home Section",
+        "information": "Integrated security guard",
+        "sinkEdgeIDSet": {
+          "cps-arch-manager-to-v2x-conn": true
+        },
+        "sourceEdgeIDSet": {
+          "cps-service-connector01": true,
+          "cps-service-connector02": true,
+          "cps-service-connector03": true
+        }
+      }
+    },
+    {
+      "id": "led-service",
+      "label": "LED Service",
+      "type": "cps",
+      "meta": {
+        "host": "192.168.0.3",
+        "location": "Home section",
+        "information": "LED indicates the possible danger at home",
+        "sinkEdgeIDSet": {
+          "cps-service-connector01": true
+        },
+        "sourceEdgeIDSet": {}
+      }
+    },
+    {
+      "id": "cctv-service",
+      "label": "CCTV Service",
+      "type": "cps",
+      "meta": {
+        "host": "192.168.0.4",
+        "location": "Home section",
+        "information": "CCTV starts to record when danger is detected at home",
+        "sinkEdgeIDSet": {
+          "cps-service-connector02": true
+        },
+        "sourceEdgeIDSet": {}
+      }
+    },
+    {
+      "id": "video-analyzer-service",
+      "label": "Video Analyzer Service",
+      "type": "cps",
+      "meta": {
+        "host": "192.168.0.5",
+        "location": "Home section",
+        "information": "Analyzes the video from CCTV",
+        "sinkEdgeIDSet": {
+          "cps-service-connector03": true
+        },
+        "sourceEdgeIDSet": {}
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "cps-service-manager-conn",
+      "from": "cps-service-manager",
+      "to": "cps-service-registry",
+      "type": "local",
+      "meta": {
+        "information": "Get service information (WSDL format)",
+        "dataType": "WSDL"
+      }
+    },
+    {
+      "id": "cps-arch-manager-conn",
+      "from": "arch-manager",
+      "to": "cps-service-manager",
+      "type": "local",
+      "meta": {
+        "information": "Get service information (WSDL format)",
+        "dataType": "WSDL"
+      }
+    },
+    {
+      "id": "cps-arch-manager-to-v2x-conn",
+      "from": "arch-manager",
+      "to": "security-application",
+      "type": "local",
+      "meta": {
+        "information": "Configure architecture",
+        "dataType": "JSON-RPC"
+      }
+    },
+    {
+      "id": "cps-service-connector01",
+      "from": "security-application",
+      "to": "led-service",
+      "type": "http",
+      "meta": {
+        "information": "Get weather",
+        "dataType": "JSON-format1"
+      }
+    },
+    {
+      "id": "cps-service-connector02",
+      "from": "security-application",
+      "to": "cctv-service",
+      "type": "http",
+      "meta": {
+        "information": "get traffic information",
+        "dataType": "JSON-format2"
+      }
+    },
+    {
+      "id": "cps-service-connector03",
+      "from": "security-application",
+      "to": "video-analyzer-service",
+      "type": "http",
+      "meta": {
+        "information": "i don't know ",
+        "dataType": "JSON-format3"
+      }
+    }
+  ]
+}
