@@ -4,3 +4,4 @@
 ## 오픈소스 공개 항목
 - CPS 어플리케이션 아키텍처 visualizer
 여러 CPS 서비스의 조합으로 표현되는 CPS 어플리케이션의 아키텍처를 시각화하여 보여주는 도구
+![alt text](https://github.com/kaist-webeng/next_generation_CPS/blob/master/scene1_arch-viewer.PNG)
